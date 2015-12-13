@@ -89,3 +89,9 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+//mahdis 
+int
+sys_myprint(void){
+	cprintf("hello mahdis!");
+	return save_state();
+}

@@ -23,6 +23,9 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+//mahdis
+int myprint(void);
+
 
 // ulib.c
 int stat(char*, struct stat*);

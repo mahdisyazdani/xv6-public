@@ -6,6 +6,9 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "fcntl.h"
+
+
 
 struct {
   struct spinlock lock;
@@ -165,6 +168,33 @@ fork(void)
   
   return pid;
 }
+
+//mahdis
+int
+save_state(void){
+  struct proc *saveproc;
+  // Allocate process.
+  if((saveproc = allocproc()) == 0)
+    return -1;
+  // Copy process state from p.
+  if((saveproc->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
+    kfree(saveproc->kstack);
+    saveproc->kstack = 0;
+    saveproc->state = UNUSED;
+    return -1;
+  }
+  saveproc->sz = proc->sz;
+  *saveproc->tf = *proc->tf;
+  saveproc->state = proc->state;
+
+  int i;
+  for(i = 0 ; i<16 ; i++){
+    saveproc->name[i]=proc->name[i];
+    cprintf(&saveproc->name[i]);
+  } 
+  return 0;
+}
+//end mahdis
 
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
