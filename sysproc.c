@@ -6,6 +6,9 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+//
+#include "my_user.h"
+#include "fcntl.h"
 
 int
 sys_fork(void)
@@ -92,6 +95,13 @@ sys_uptime(void)
 //mahdis 
 int
 sys_myprint(void){
-	cprintf("hello mahdis!");
-	return save_state();
+	struct proc *proc = save_state();
+
+    	
+   	cprintf(&proc->name[0]);
+   	int file = open("output",O_CREATE|O_RDWR);
+	write(file , proc,sizeof(proc));
+	close(file);
+	//cprintf("hello mahdis!");
+	return 0;
 }

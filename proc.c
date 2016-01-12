@@ -10,6 +10,7 @@
 
 
 
+
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -170,18 +171,17 @@ fork(void)
 }
 
 //mahdis
-int
-save_state(void){
+struct proc * save_state(void){
   struct proc *saveproc;
   // Allocate process.
   if((saveproc = allocproc()) == 0)
-    return -1;
+    return saveproc;
   // Copy process state from p.
   if((saveproc->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
     kfree(saveproc->kstack);
     saveproc->kstack = 0;
     saveproc->state = UNUSED;
-    return -1;
+    return saveproc;
   }
   saveproc->sz = proc->sz;
   *saveproc->tf = *proc->tf;
@@ -192,7 +192,8 @@ save_state(void){
     saveproc->name[i]=proc->name[i];
     cprintf(&saveproc->name[i]);
   } 
-  return 0;
+
+  return saveproc;
 }
 //end mahdis
 
