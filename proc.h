@@ -1,7 +1,6 @@
 // Segments in proc->gdt.
 #define NSEGS     7
 
-
 // Per-CPU state
 struct cpu {
   uchar id;                    // Local APIC ID; index into cpus[] below
@@ -69,6 +68,7 @@ struct proc {
   char name[16];               // Process name (debugging)
 };
 
+//mahdis
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss

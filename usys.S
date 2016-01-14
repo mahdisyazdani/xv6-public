@@ -30,4 +30,4 @@ SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
 //mahdis
-SYSCALL(myprint)
+SYSCALL(processstate)

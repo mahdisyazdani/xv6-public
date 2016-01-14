@@ -1,5 +1,6 @@
 struct stat;
 struct rtcdate;
+struct proc;	
 
 // system calls
 int fork(void);
@@ -24,7 +25,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 //mahdis
-int myprint(void);
+int processstate(struct proc *);
 
 
 // ulib.c

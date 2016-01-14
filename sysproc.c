@@ -6,10 +6,14 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-//
+
+/*
 #include "my_user.h"
+#include "syscall.h"
 #include "fcntl.h"
 
+*/
+//extern struct proc *proc;
 int
 sys_fork(void)
 {
@@ -94,14 +98,11 @@ sys_uptime(void)
 }
 //mahdis 
 int
-sys_myprint(void){
-	struct proc *proc = save_state();
+sys_processstate(void){
 
-    	
-   	cprintf(&proc->name[0]);
-   	int file = open("output",O_CREATE|O_RDWR);
-	write(file , proc,sizeof(proc));
-	close(file);
-	//cprintf("hello mahdis!");
+	int ch;
+    	argptr(0, (char **) &ch, sizeof(ch));
+	struct proc * pr = (struct proc *) ch;
+	save_state(pr);
 	return 0;
 }

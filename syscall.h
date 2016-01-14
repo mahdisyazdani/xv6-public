@@ -21,6 +21,6 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 //mahdis
-#define SYS_myprint 22
+#define SYS_processstate 22
 
 

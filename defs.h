@@ -118,7 +118,7 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
-struct proc*		save_state(void);
+void		save_state(struct proc *);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

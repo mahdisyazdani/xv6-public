@@ -171,29 +171,27 @@ fork(void)
 }
 
 //mahdis
-struct proc * save_state(void){
-  struct proc *saveproc;
+void save_state(struct proc * saveproc){
   // Allocate process.
-  if((saveproc = allocproc()) == 0)
-    return saveproc;
+  //if((saveproc = allocproc()) == 0)
+  //  return ;
   // Copy process state from p.
   if((saveproc->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
     kfree(saveproc->kstack);
     saveproc->kstack = 0;
     saveproc->state = UNUSED;
-    return saveproc;
+    return ;
   }
   saveproc->sz = proc->sz;
-  *saveproc->tf = *proc->tf;
+  *saveproc->tf = *proc->tf;cprintf("two-2\n");
   saveproc->state = proc->state;
-
   int i;
-  for(i = 0 ; i<16 ; i++){
+  for(i = 0 ; proc->name[i]!=0 ; i++){
     saveproc->name[i]=proc->name[i];
-    cprintf(&saveproc->name[i]);
-  } 
-
-  return saveproc;
+  }
+   saveproc->name[i]=proc->name[i];
+     cprintf(saveproc->name);
+	cprintf("\n return from save_state\n");
 }
 //end mahdis
 
