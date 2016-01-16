@@ -102,6 +102,8 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 //mahdis
 extern int sys_processstate(void);
+extern int sys_memorydump(void);
+extern int sys_loadproc(void);
 
 
 static int (*syscalls[])(void) = {
@@ -128,6 +130,8 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 //mahdis
 [SYS_processstate] sys_processstate,
+[SYS_memorydump] sys_memorydump,
+[SYS_loadproc] sys_loadproc,
 };
 
 void

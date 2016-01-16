@@ -118,7 +118,8 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
-void		save_state(struct proc *);
+void			save_state(struct proc *);
+int				loadproc(struct proc *, char *);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

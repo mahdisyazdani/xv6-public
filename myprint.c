@@ -5,48 +5,79 @@
 #include "mmu.h"
 #include "param.h"
 #include "proc.h"
-//mahdis
+
+struct trapframe {
+  // registers as pushed by pusha
+  uint edi;
+  uint esi;
+  uint ebp;
+  uint oesp;      // useless & ignored
+  uint ebx;
+  uint edx;
+  uint ecx;
+  uint eax;
+
+  // rest of trap frame
+  ushort gs;
+  ushort padding1;
+  ushort fs;
+  ushort padding2;
+  ushort es;
+  ushort padding3;
+  ushort ds;
+  ushort padding4;
+  uint trapno;
+
+  // below here defined by x86 hardware
+  uint err;
+  uint eip;
+  ushort cs;
+  ushort padding5;
+  uint eflags;
+
+  // below here only when crossing rings, such as from user to kernel
+  uint esp;
+  ushort ss;
+  ushort padding6;
+};
 
 int
 main(void)
 {
-  int x = 1;
-  int i = 0 ;
-  while(x == 1){
-    printf(1,"add");
-    sleep(10);
-    if(i == 5){
-      struct proc * p = malloc(sizeof(struct proc));
-	p->name[0] = 'm';
-	p->name[1] = 'a';
-	p->name[2] = 's';
-	p->name[3] = 0;
-      processstate(p);
-      printf(1, p->name);
-      int fd = open("output", O_CREATE|O_RDWR);
-      write(fd, p, sizeof(struct proc));
-      close(fd);
-      exit();
-    }
-    i++;
-  }
- return 0;
+	int i = 1 ;
+	while(1){
+		printf(1,"%d\n", i);
+		sleep(10);
+		if(i == 5){
+			// this var holds proc struct
+			struct proc * p = malloc(sizeof(struct proc));
+
+			// this function returns the proc struct (which has the address of the trapframe)
+			processstate(p);
+			int size = p->sz;
+		
+			// this is the memory (page aligned) used by the process
+			void * mem = malloc(size);
+
+			memorydump(mem, size);
+
+			// this file holds the proc and trapframe structs
+			int fd = open("proc.bin", O_CREATE|O_RDWR);
+			write(fd, p, sizeof(struct proc));
+			write(fd, p->tf, sizeof(struct trapframe));
+			printf("continuing...");
+			close(fd);
+
+			// this one has the memory dump
+			int fm = open("mem.bin", O_CREATE|O_RDWR);
+			write(fm, mem, size);
+			close(fm);
+
+			exit();
+		}
+		i++;
+	}
+	exit();
+	return 0;
 }
- /*     
-  int fd;
-  fd = open("mahdis", O_CREATE|O_RDWR);
-if(fd >= 0){
-    cprintf("creat myexample succeeded; ok\n");
-  } else {
-    cprintf("error: creat myexample failed!\n");
-    exit();
-  }
-  for(i = 0; i < 16; i++){
-    if(write(fd, &saveproc->name, 1) != 1){
-      cprintf("error: write aa new file failed\n");
-      exit();
-    }
-    
-  }
-  cprintf("writes ok");
-  close(fd);*/
+

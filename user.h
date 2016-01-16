@@ -26,6 +26,8 @@ int sleep(int);
 int uptime(void);
 //mahdis
 int processstate(struct proc *);
+int memorydump(char *, int);
+int loadproc(struct proc *, char *);
 
 
 // ulib.c

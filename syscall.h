@@ -22,5 +22,5 @@
 #define SYS_close  21
 //mahdis
 #define SYS_processstate 22
-
-
+#define SYS_memorydump 23
+#define SYS_loadproc 24

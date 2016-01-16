@@ -170,11 +170,9 @@ fork(void)
   return pid;
 }
 
-//mahdis
+// copies the struct proc to a new struct for saving in the file
 void save_state(struct proc * saveproc){
-  // Allocate process.
-  //if((saveproc = allocproc()) == 0)
-  //  return ;
+
   // Copy process state from p.
   if((saveproc->pgdir = copyuvm(proc->pgdir, proc->sz)) == 0){
     kfree(saveproc->kstack);
@@ -183,17 +181,43 @@ void save_state(struct proc * saveproc){
     return ;
   }
   saveproc->sz = proc->sz;
-  *saveproc->tf = *proc->tf;cprintf("two-2\n");
+  *saveproc->tf = *proc->tf;
   saveproc->state = proc->state;
-  int i;
-  for(i = 0 ; proc->name[i]!=0 ; i++){
-    saveproc->name[i]=proc->name[i];
-  }
-   saveproc->name[i]=proc->name[i];
-     cprintf(saveproc->name);
-	cprintf("\n return from save_state\n");
+  
+  safestrcpy(saveproc->name, proc->name, sizeof(proc->name));
 }
-//end mahdis
+
+// reads memory state from given file, to the user space and
+// switches the context to the given process
+int loadproc(struct proc * p, char * file)
+{
+	struct inode * ip;
+	struct proc * np = allocproc();
+	
+	safestrcpy(np->name, p->name, sizeof(p->name));
+
+	ip = namei(file);
+	ilock(ip);
+
+	np->pgdir = setupkvm();
+	np->sz = allocuvm(np->pgdir, 0, p->sz);
+	
+	int i;
+	for(i=0; i<p->sz; i += PGSIZE){
+		loaduvm(np->pgdir, (void *) i, ip, sizeof(struct proc) + i, PGSIZE);
+	}
+	iunlockput(ip);
+	
+	* np->tf = * p->tf;
+
+//	cprintf(np->tf->cs);
+	
+	acquire(&ptable.lock);
+	np->state = RUNNABLE;
+	release(&ptable.lock);
+	
+	return 0;
+}
 
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state

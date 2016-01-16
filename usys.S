@@ -31,3 +31,5 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 //mahdis
 SYSCALL(processstate)
+SYSCALL(memorydump)
+SYSCALL(loadproc)

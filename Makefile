@@ -174,6 +174,7 @@ UPROGS=\
 	_wc\
 	_zombie\
 	_myprint\
+	_continue\
 
 	
 
