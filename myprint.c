@@ -65,7 +65,7 @@ main(void)
 			int fd = open("proc.bin", O_CREATE|O_RDWR);
 			write(fd, p, sizeof(struct proc));
 			write(fd, p->tf, sizeof(struct trapframe));
-			printf("continuing...");
+			printf(1, "continuing...");
 			close(fd);
 
 			// this one has the memory dump

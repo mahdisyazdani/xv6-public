@@ -54,12 +54,12 @@ int main(void){
 	p->tf = tf;
 	
 	int pid = fork();
-	if(pid == 0){
+	if(pid == 0){ // child process
 		loadproc(p, "mem.bin");
 		printf(1,"child finished\n");
 		exit();
 	}
-	else {
+	else { // parent process
 		printf(1, "parent pid: %d\n", getpid());
 		wait();
 		exit();

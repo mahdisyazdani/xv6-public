@@ -199,7 +199,7 @@ int loadproc(struct proc * p, char * file)
 	ip = namei(file);
 	ilock(ip);
 
-	np->pgdir = setupkvm();
+	//np->pgdir = setupkvm();
 	np->sz = allocuvm(np->pgdir, 0, p->sz);
 	
 	int i;

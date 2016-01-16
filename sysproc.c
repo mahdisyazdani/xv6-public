@@ -139,7 +139,7 @@ static int memory_dump(void *p, uint sz)
 		cprintf("write successfuly at %p\n", p + i);
 	}
 	
-	*((struct trapframe *) (p + sz)) = *(proc->tf);
+//	*((struct trapframe *) (p + sz)) = *(proc->tf);
 	
 	return 0;
 }
